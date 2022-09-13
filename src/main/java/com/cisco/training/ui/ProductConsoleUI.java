@@ -32,6 +32,7 @@ public class ProductConsoleUI {
 		int qoh = Integer.parseInt(kb.nextLine());
 		
 		Product p = new Product(name, price, qoh);
+		
 		int id = service.addNewProduct(p);
 		System.out.println("Added Product with Id "+id);
 	}

@@ -4,19 +4,22 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cisco.training.dal.ProductDAO;
 
 import com.cisco.training.domain.Product;
 
+@Transactional
 @Service
 public class ProductServiceImpl implements ProductService {
-
-	ProductDAO dao; // = new ProductDAOInMemImpl();
+	
+	private ProductDAO dao; // = new ProductDAOInMemImpl();
 	
 	@Autowired
 	public void setDao(ProductDAO dao) {
 		this.dao = dao;
+		System.out.println("<<<<< Type of dao injected is "+dao.getClass().getName()+" >>>>>");
 	}
 	
 	@Override
@@ -25,6 +28,7 @@ public class ProductServiceImpl implements ProductService {
 			throw new IllegalArgumentException("Expected product value to be >= 10k, but was " + toBeAdded.getPrice() * toBeAdded.getQoh());
 		}else {
 			Product saved = dao.save(toBeAdded);
+			//saved ----> detached
 			return saved.getId();
 		}
 	}
@@ -49,4 +53,11 @@ public class ProductServiceImpl implements ProductService {
 		return dao.findAll();
 	}
 
+	
+	public void changePrice(int id, float newPrice) {
+		Product existing = dao.findById(id);
+		existing.setPrice(newPrice);
+		//dao.updateDetached(existing);
+	}
+	
 }

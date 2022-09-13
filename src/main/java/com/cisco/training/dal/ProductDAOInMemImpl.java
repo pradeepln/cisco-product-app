@@ -34,4 +34,10 @@ public class ProductDAOInMemImpl implements ProductDAO {
 		db.remove(id);		
 	}
 
+	@Override
+	public void updateDetached(Product existing) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

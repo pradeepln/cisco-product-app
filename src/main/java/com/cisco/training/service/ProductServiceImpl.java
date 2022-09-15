@@ -7,14 +7,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cisco.training.dal.ProductDAO;
-
+import com.cisco.training.dal.ProductDAOJpaImpl;
 import com.cisco.training.domain.Product;
 
 @Transactional
 @Service
 public class ProductServiceImpl implements ProductService {
 	
-	private ProductDAO dao; // = new ProductDAOInMemImpl();
+	static final int MIN_PRODUCT_VALUE = 10_000;
+	
+	
+	private ProductDAO dao;// = new ProductDAOJpaImpl();
 	
 	@Autowired
 	public void setDao(ProductDAO dao) {
@@ -24,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
 	
 	@Override
 	public int addNewProduct(Product toBeAdded) {
-		if(toBeAdded.getPrice() * toBeAdded.getQoh() < 10_000) {
+		if(toBeAdded.getPrice() * toBeAdded.getQoh() < MIN_PRODUCT_VALUE) {
 			throw new IllegalArgumentException("Expected product value to be >= 10k, but was " + toBeAdded.getPrice() * toBeAdded.getQoh());
 		}else {
 			Product saved = dao.save(toBeAdded);

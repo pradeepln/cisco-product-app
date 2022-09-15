@@ -13,3 +13,6 @@ public interface ProductDAO {
 	void updateDetached(Product existing);
 	
 }
+
+
+// controller ------> service --------> dao ---------> em
